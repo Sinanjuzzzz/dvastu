@@ -13,7 +13,7 @@ export default {
     },
   },
   effects: {
-    *fetch({ payload: { page = 1 } }, { call, put }) {
+    *fetch({ payload: { page } }, { call, put }) {
       const { data, headers } = yield call(usersService.fetch, { page });
       yield put({
         type: 'save',
