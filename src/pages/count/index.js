@@ -13,8 +13,18 @@ const Index = ({dispatch,count}) =>{
       type: 'count/minus',
     });
   }
+  function delayadd() {
+    dispatch({
+      type: 'count/delayadd',
+    });
+  }
+  function delayminus() {
+    dispatch({
+      type: 'count/delayminus',
+    });
+  }
   return (
-    <CountUI add ={function(){add()}} minus={function(){minus()}} count={count}/>
+    <CountUI add={() => add()} minus={() => minus()} delayadd={() => delayadd()} delayminus={() => delayminus()} count={count}/>
   )
 }
 
