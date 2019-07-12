@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'antd'
+import { Table } from 'antd'
 import { connect } from 'dva'
 
 function mapStatetoProps(state) {
@@ -14,7 +14,7 @@ class Users extends React.Component{
 
     constructor(props){
         super(props);
-        this.usersFetch({ page:1, size:3 });
+        this.usersFetch(1,3);
     }
 
     usersFetch = (page, size) => {
@@ -28,12 +28,39 @@ class Users extends React.Component{
         }) 
     }
 
+    
+
 
     render(){
-        const {list} = this.props
+        const { list, loading } = this.props
+
+        const columns = [
+            {
+              title: 'Name',
+              dataIndex: 'name',
+              key: 'name',
+            },
+            {
+              title: 'Email',
+              dataIndex: 'email',
+              key: 'email',
+            },
+            {
+              title: 'Website',
+              dataIndex: 'website',
+              key: 'website',
+            },
+        ]
+
         return(
             <div>
-                Users
+                <Table
+                columns={columns}
+                dataSource={list}
+                loading={loading}
+                rowKey={record => record.id}
+                pagination={false}
+                />
             </div>
         )
     }
