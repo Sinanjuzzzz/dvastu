@@ -8,7 +8,7 @@ function Header({ location }) {
     <Menu selectedKeys={[location.pathname]} mode="horizontal" theme="dark">
       <Menu.Item key="/users">
         <Link to="/users">
-          <Icon type="bars" />Users
+          <Icon type="user" />Users
         </Link>
       </Menu.Item>
       <Menu.Item key="/list">
