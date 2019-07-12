@@ -1,4 +1,4 @@
-import { queryUsers } from '../services/users'
+import * as usersServices from '../services/users'
 
 export default {
     namespace: 'users',
@@ -14,8 +14,8 @@ export default {
         },
     },
     effects:{
-        *fetch({ payload: { page, size } }, { call, put } ){
-            const { data, headers } = yield call(queryUsers, { page, size } )
+        *fetchUsersList({ payload: { page, size } }, { call, put }){
+            const { data, headers } = yield call(usersServices.queryUsersList, { page, size })
             yield put({
                 type: 'save',
                 payload: {
@@ -26,5 +26,17 @@ export default {
                 }
             })
         },
+        *queryUserbyId({ payload: { id } }, { call, put }){
+            const { data, headers } = yield call(usersServices.queryUserbyId, {id})
+            yield put({
+                type: 'save',
+                payload: {
+                    data,
+                    total: 1,
+                    page: 1,
+                    size: 1,
+                }
+            })
+        }
     },
 }

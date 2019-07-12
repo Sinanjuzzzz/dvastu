@@ -1,6 +1,8 @@
 import React from 'react'
-import { Table, Pagination } from 'antd'
+import { Table, Pagination, Row, Col, Input } from 'antd'
 import { connect } from 'dva'
+
+const { Search } = Input
 
 function mapStatetoProps(state) {
     const { list, total, page, size } = state.users;
@@ -14,22 +16,32 @@ class Users extends React.Component{
 
     constructor(props){
         super(props);
-        this.usersFetch(1, 3)
+        this.fetchUsersList(1, 3)
     }
 
-    usersFetch = (page, size) => {
+    fetchUsersList = (page, size) => {
         const { dispatch } = this.props;
         dispatch({
-            type:'users/fetch',
-            payload :{
-                page: page,
-                size: size,
+            type: 'users/fetchUsersList',
+            payload: {
+                page,
+                size,
             }
         }) 
     }
 
+    queryUserbyId = (id) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'users/queryUserbyId',
+            payload: {
+                id,
+            }
+        })
+    }
+
     onShowSizeChange = (page, size) => {
-        this.usersFetch(page, size)
+        this.fetchUsersList(page, size)
       }
 
     
@@ -41,24 +53,49 @@ class Users extends React.Component{
         const pageSizeOptions = [ '3', '5', '10' ]
         const columns = [
             {
-              title: 'Name',
-              dataIndex: 'name',
-              key: 'name',
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
             },
             {
-              title: 'Email',
-              dataIndex: 'email',
-              key: 'email',
+                title: 'UserName',
+                dataIndex: 'username',
+                key: 'username',
             },
             {
-              title: 'Website',
-              dataIndex: 'website',
-              key: 'website',
+                title: 'ID',
+                dataIndex: 'id',
+                key: 'id',
+            },
+            {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+            },
+            {
+                title: 'Website',
+                dataIndex: 'website',
+                key: 'website',
+            },
+            {
+                title: 'Phone',
+                dataIndex: 'phone',
+                key: 'phone',
             },
         ]
 
         return(
-            <div>
+            <Row type="flex" justify="center" >
+                <Col span={6} >
+                <Search
+                placeholder="输入ID"
+                enterButton="Search"
+                size="large"
+                onSearch={value => this.queryUserbyId(value)}
+                />
+                </Col>
+
+                <Col span={20} >
                 <Table
                 columns={columns}
                 dataSource={list}
@@ -74,10 +111,11 @@ class Users extends React.Component{
                 total={total}
                 current={page}
                 pageSize={size}
-                onChange={(page,size)=>{this.usersFetch(page, size)}}
-                />
+                onChange={this.fetchUsersList}
+                /></Col>
+                
 
-            </div>
+            </Row>
         )
     }
 }
