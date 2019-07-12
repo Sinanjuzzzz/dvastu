@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import CountUI from '../../components/CountUI';
 
-const Index = ({ dispatch, number, time }) =>{
+const Index = ({ dispatch, number, time }) => {
   function add() {
     dispatch({
       type: 'count/add',
