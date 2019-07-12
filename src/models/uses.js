@@ -6,10 +6,11 @@ export default {
         list: [],
         total: null,
         page: null,
+        size: null,
     },
     reducers:{
-        save(state, { payload: { data: list, total, page } }){
-            return { ...state, list, total, page };
+        save(state, { payload: { data: list, total, page, size } }){
+            return { ...state, list, total, page, size };
         },
     },
     effects:{
@@ -21,6 +22,7 @@ export default {
                     data,
                     total: parseInt(headers['x-total-count'], 10),
                     page: parseInt(page, 10),
+                    size: size,
                 }
             })
         },
