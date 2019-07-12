@@ -26,8 +26,8 @@ export default {
                 }
             })
         },
-        *queryUserbyId({ payload: { id } }, { call, put }){
-            const { data, headers } = yield call(usersServices.queryUserbyId, {id})
+        *queryUser({ payload: { queryMode, queryValue } }, { call, put }){
+            const { data } = yield call(usersServices.queryUser, { queryMode, queryValue })
             yield put({
                 type: 'save',
                 payload: {

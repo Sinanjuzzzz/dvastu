@@ -1,8 +1,9 @@
 import React from 'react'
-import { Table, Pagination, Row, Col, Input } from 'antd'
+import { Table, Pagination, Row, Col, Input, Select } from 'antd'
 import { connect } from 'dva'
 
 const { Search } = Input
+const { Option } = Select;
 
 function mapStatetoProps(state) {
     const { list, total, page, size } = state.users;
@@ -16,7 +17,10 @@ class Users extends React.Component{
 
     constructor(props){
         super(props);
-        this.fetchUsersList(1, 3)
+        this.fetchUsersList(1, 3);
+        this.state = {
+            queryMode: 'id',
+        };
     }
 
     fetchUsersList = (page, size) => {
@@ -30,12 +34,13 @@ class Users extends React.Component{
         }) 
     }
 
-    queryUserbyId = (id) => {
+    queryUser = (queryMode, queryValue) => {
         const { dispatch } = this.props;
         dispatch({
-            type: 'users/queryUserbyId',
+            type: 'users/queryUser',
             payload: {
-                id,
+                queryMode, 
+                queryValue,
             }
         })
     }
@@ -86,12 +91,29 @@ class Users extends React.Component{
 
         return(
             <Row type="flex" justify="center" >
-                <Col span={6} >
+                <Col>
+                <Select
+                showSearch
+                style={{ width: 100 }}
+                placeholder="查询方式"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onChange={option => {this.setState({ queryMode:option })}}
+                >
+                <Option value="id">ID</Option>
+                <Option value="name">Name</Option>
+                <Option value="username">UserName</Option>
+                </Select>
+                </Col>
+
+                <Col span={10} >
                 <Search
-                placeholder="输入ID"
+                placeholder={"输入"+this.state.queryMode}
                 enterButton="Search"
-                size="large"
-                onSearch={value => this.queryUserbyId(value)}
+                size="default"
+                onSearch={value => this.queryUser(this.state.queryMode,value)}
                 />
                 </Col>
 

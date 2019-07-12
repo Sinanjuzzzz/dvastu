@@ -6,7 +6,7 @@ export function queryUsersList(params){
     return request(`/api/users?_page=${page}&_limit=${size}`);
 }
 
-export function queryUserbyId(params){
-    const { id } = params
-    return request(`/api/users?id=${id}`);
+export function queryUser(params){
+    const { queryMode, queryValue } = params
+    return request(`/api/users?${queryMode}=${queryValue}`);
 }
