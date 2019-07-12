@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Pagination, Row, Col, Input, Select } from 'antd'
+import { Table, Pagination, Row, Col, Input, Select, Button } from 'antd'
 import { connect } from 'dva'
 
 const { Search } = Input
@@ -115,6 +115,10 @@ class Users extends React.Component{
                 size="default"
                 onSearch={value => this.queryUser(this.state.queryMode,value)}
                 />
+                </Col>
+
+                <Col>
+                <Button type="danger" onClick={() => {this.fetchUsersList(1, 3)} } >还原</Button>
                 </Col>
 
                 <Col span={20} >
