@@ -26,6 +26,11 @@ function Header({ location }) {
           <Icon type="compass" />快速上手demo
         </Link>
       </Menu.Item>
+      <Menu.Item key="/todos">
+        <Link to="/todos">
+        <Icon type="schedule" />ToDos
+        </Link>
+      </Menu.Item>
     </Menu>
   );
 }

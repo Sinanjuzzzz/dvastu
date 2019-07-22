@@ -16,7 +16,6 @@ class ToDoCards extends React.Component {
   constructor(props) {
     super(props);
     this.fetchUsersList(1, this.props.usersTotal)
-    this.fetchToDosList(1,3)
   }
 
   fetchToDosList = (page, size) => {
