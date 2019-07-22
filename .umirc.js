@@ -28,5 +28,9 @@ export default {
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }
-  }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src/'),
+   }},
 }

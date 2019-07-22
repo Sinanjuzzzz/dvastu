@@ -1,33 +1,59 @@
-import ListComponents from '../../components/list'
+import React from 'react';
 import { connect } from 'dva';
 
-function mapStateToProps(state) {
-    const { list1, list2 } = state.list;
-    return {
-        list1,
-        list2,
-    };
+const mapStateToProps = (state) => {
+	const { list1, list2 } = state.list;
+	return {
+		list1,
+		list2,
+	};
 }
+@connect(mapStateToProps)
+class List extends React.Component {
 
-const List = ({ dispatch, list1, list2 }) => {
+	list1pop = (popItem) => {
+		const { dispatch } = this.props
+		dispatch({
+			type: 'list/list1pop',
+			payload: { popItem },
+		})
+	}
 
-    function list1pop( popItem ) {
-        dispatch({
-            type: 'list/list1pop',
-            payload: { popItem },
-        }) 
-    }
+	list2pop = (popItem) => {
+		const { dispatch } = this.props
+		dispatch({
+			type: 'list/list2pop',
+			payload: { popItem },
+		})
+	}
+	render() {
+		const { list1, list2 } = this.props;
+		return (
+			<div>
+				<h3>List1</h3>
+				{
+					list1.map((item, key) => {
+						return (
+							<div key={item} id={item} onClick={(e) => { this.list1pop(e.target.id); this.forceUpdate() }} >
+								{item}
+							</div>
+						)
+					})
+				}
+				<h3>list2</h3>
+				{
+					list2.map((item, key) => {
+						return (
+							<div key={item} id={item} onClick={(e) => { this.list2pop(e.target.id); this.forceUpdate() }} >
+								{item}
+							</div>
+						)
+					})
+				}
+			</div>
+		);
+	}
 
-    function list2pop( popItem ) {
-        dispatch({
-            type: 'list/list2pop',
-            payload: { popItem },
-        }) 
-    }
-
-    return (
-        <ListComponents list1={list1} list2={list2} list1pop={(popItem) => list1pop(popItem)} list2pop={(popItem) => list2pop(popItem)} />
-    );
 };
 
-export default connect(mapStateToProps)(List)
+export default List

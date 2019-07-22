@@ -1,41 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import CountUI from '../../components/CountUI';
 
-const Index = ({ dispatch, number, time }) => {
-  function add() {
-    dispatch({
-      type: 'count/add',
-    });
-  }
-  function minus() {
-    dispatch({
-      type: 'count/minus',
-    });
-  }
-  function delayadd() {
-    dispatch({
-      type: 'count/delayadd',
-    });
-  }
-  function delayminus() {
-    dispatch({
-      type: 'count/delayminus',
-    });
-  }
-  function settime( time ) {
-    console.log('connect, '+time)
-    dispatch({
-      type: 'count/settime',
-      payload: { time }
-    });
-  }
-  return (
-    <CountUI add={() => add()} minus={() => minus()} delayadd={() => delayadd()} delayminus={() => delayminus()} settime={(time) => settime(time)} number={number} time={time} />
-  )
-}
-
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   const { number, time } = state.count;
   return {
     number,
@@ -43,4 +9,56 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Index)
+@connect(mapStateToProps)
+class Count extends React.Component {
+  add = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'count/add',
+    });
+  }
+  minus = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'count/minus',
+    });
+  }
+  delayadd = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'count/delayadd',
+    });
+  }
+  delayminus = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'count/delayminus',
+    });
+  }
+  settime = (time) => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'count/settime',
+      payload: { time }
+    });
+  }
+  render(){
+    const { number } = this.props;
+
+    return (
+    <div>
+      <h2>{number}</h2>
+
+      <h3>立刻加减</h3>
+        <button key="add" onClick={this.add}>+</button>
+        <button key="minus" onClick={this.minus}>-</button>
+        <h3>延时<input style={{ width:'30px' }} onChange={ (e) => { this.settime(e.target.value); } } />秒加减</h3>
+        <button key="add" onClick={this.delayadd}>+</button>
+        <button key="minus" onClick={this.delayminus}>-</button>
+    </div>
+    )
+  }
+  
+}
+
+export default Count
