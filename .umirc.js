@@ -1,4 +1,4 @@
-
+const path = require('path');
 // ref: https://umijs.org/config/
 export default {
   treeShaking: true,
@@ -10,7 +10,7 @@ export default {
       dynamicImport: false,
       title: 'umistu',
       dll: false,
-      
+
       routes: {
         exclude: [
           /models\//,
@@ -26,11 +26,10 @@ export default {
     "/api": {
       "target": "http://jsonplaceholder.typicode.com/",
       "changeOrigin": true,
-      "pathRewrite": { "^/api" : "" }
+      "pathRewrite": { "^/api": "" }
     }
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src/'),
-   }},
+  alias: {
+    "@": path.resolve(__dirname, './src')
+  }
 }
