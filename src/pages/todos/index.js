@@ -1,13 +1,19 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Icon, Descriptions, Row, Col, Collapse } from 'antd';
+import { Icon, Descriptions, Row, Col, Collapse, Spin } from 'antd';
 const { Panel } = Collapse;
 
-const mapStatetoProps = (state) => {
-  const { list: todosList, total, page, size } = state.todos;
-  const { list: usersList, total: usersTotal } = state.users;
+const mapStatetoProps = ({ todos, users, loading }) => {
+  const { list: todosList, total, page, size } = todos;
+  const { list: usersList, total: usersTotal } = users;
   return {
-    todosList, usersList, total, usersTotal, page, size,
+    todosList,
+    usersList,
+    total,
+    usersTotal,
+    page,
+    size,
+    todosLoading: loading.effects['todos/queryToDo'],
   };
 }
 
@@ -52,32 +58,34 @@ class ToDoCards extends React.Component {
   }
 
   render() {
-    const { usersList, todosList } = this.props
+    const { usersList, todosList, todosLoading } = this.props
     return (
       <Row type="flex" justify="center" style={{ textAlign: "left" }}>
         <Col span={20}>
-          <Collapse accordion onChange={activeKey=>this.queryToDo('userId', activeKey)}>
-          {
-            usersList.length?(usersList.map(userItem=>
-              <Panel key={userItem.id} header={userItem.name}>
-              <Collapse defaultActiveKey="0">
-                {
-                  todosList.length ? (todosList.map(todoitem =>
-                    <Panel header={"id: " + todoitem.id} key={todoitem.id}>
-                      <Descriptions bordered>
-                        <Descriptions.Item label="ID">{todoitem.id}</Descriptions.Item>
-                        <Descriptions.Item label="UserID">{todoitem.userId}</Descriptions.Item>
-                        <Descriptions.Item label="Title">{todoitem.title}</Descriptions.Item>
-                        <Descriptions.Item label="completed">{todoitem.completed ? <Icon type="check" /> : <Icon type="close" />}</Descriptions.Item>
-                      </Descriptions>
-                    </Panel>
-                  )) : null
-                }
-              </Collapse>
-            </Panel>
-              )):null
-          }
-            
+          <Collapse accordion onChange={activeKey => this.queryToDo('userId', activeKey)}>
+            {
+              usersList.length ? (usersList.map(userItem =>
+                <Panel key={userItem.id} header={userItem.name}>
+                  <Spin spinning={todosLoading}>
+                    <Collapse defaultActiveKey="0">
+                      {
+                        todosList.length ? (todosList.map(todoitem =>
+                          <Panel header={"id: " + todoitem.id} key={todoitem.id}>
+                            <Descriptions bordered>
+                              <Descriptions.Item label="ID">{todoitem.id}</Descriptions.Item>
+                              <Descriptions.Item label="UserID">{todoitem.userId}</Descriptions.Item>
+                              <Descriptions.Item label="Title">{todoitem.title}</Descriptions.Item>
+                              <Descriptions.Item label="completed">{todoitem.completed ? <Icon type="check" /> : <Icon type="close" />}</Descriptions.Item>
+                            </Descriptions>
+                          </Panel>
+                        )) : null
+                      }
+                    </Collapse>
+                  </Spin>
+                </Panel>
+              )) : null
+            }
+
           </Collapse>
         </Col>
       </Row>
