@@ -1,17 +1,22 @@
 import * as usersServices from '@/services/users'
 
+const initState = {
+    list: [],
+    total: null,
+    page: null,
+    size: null,
+}
+
 export default {
     namespace: 'users',
-    state: {
-        list: [],
-        total: null,
-        page: null,
-        size: null,
-    },
+    state: initState,
     reducers: {
         save(state, { payload: { data: list, total, page, size } }) {
             return { ...state, list, total, page, size };
         },
+        clear() {
+            return { ...initState }
+        }
     },
     effects: {
         *fetchUsersList({ payload: { page, size } }, { call, put }) {

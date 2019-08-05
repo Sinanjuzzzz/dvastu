@@ -20,7 +20,10 @@ const mapStatetoProps = ({ todos, users, loading }) => {
 function ToDoCards(props) {
   const { usersTotal, usersList, todosList, todosLoading, dispatch } = props
 
-  useEffect(() => { fetchUsersList(1, usersTotal) }, [fetchUsersList, usersTotal])
+  useEffect(() => {
+    fetchUsersList(1, usersTotal)
+    return () =>{dispatch({ type: "users/clear" })} 
+  })
 
   // function fetchToDosList(page, size) {
   //   const { dispatch } = this.props;
