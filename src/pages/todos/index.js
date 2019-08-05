@@ -21,30 +21,14 @@ function ToDoCards(props) {
   const { usersTotal, usersList, todosList, todosLoading, dispatch } = props
 
   useEffect(() => {
-    fetchUsersList(1, usersTotal)
-    return () =>{dispatch({ type: "users/clear" })} 
-  })
-
-  // function fetchToDosList(page, size) {
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: 'todos/fetchToDosList',
-  //     payload: {
-  //       page,
-  //       size,
-  //     }
-  //   })
-  // }
-
-  function fetchUsersList(page, size) {
     dispatch({
       type: 'users/fetchUsersList',
       payload: {
-        page,
-        size,
+        page: 1,
+        size: usersTotal,
       }
     })
-  }
+  }, [usersTotal,dispatch])
 
   function queryToDo(queryMode, queryValue) {
     dispatch({
